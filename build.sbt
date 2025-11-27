@@ -59,9 +59,9 @@ assembly / assemblyMergeStrategy := {
 
 resolvers += "sigar" at "https://repository.mulesoft.org/nexus/content/repositories/public"
 
-javacOptions ++= Seq("-source", "11", "-target", "11")
+javacOptions ++= Seq("-source", "1.8", "-target", "1.8")
 scalacOptions ++= Seq(
-  "-target:11",
+  "-target:jvm-1.8",
   "-encoding", "UTF-8",
   "-deprecation",
   "-feature",

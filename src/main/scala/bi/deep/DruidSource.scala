@@ -14,7 +14,7 @@ import scala.jdk.CollectionConverters._
 class DruidSource extends TableProvider with DataSourceRegister {
 
   override def inferSchema(options: CaseInsensitiveStringMap): StructType = {
-    getTable(null, Array.empty, options).schema()
+    getTable(null, Array.empty, options).schema
   }
 
   override def getTable(

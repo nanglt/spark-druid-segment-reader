@@ -36,7 +36,7 @@ class DruidRowConverter(rowIt: QueryableIndexIndexableAdapter#RowIteratorImpl, f
       internal(targetFieldIdx) = targetField.dataType match {
         case _: ArrayType => value match {
           case null => null
-          case arrValue: util.List[String] => ArrayData.toArrayData(arrValue.asScala.map(UTF8String.fromString).toArray)
+          case arrValue: util.List[_] @unchecked => ArrayData.toArrayData(arrValue.asScala.map(v => UTF8String.fromString(v.asInstanceOf[String])).toArray)
           case strValue: String => ArrayData.toArrayData(Array(UTF8String.fromString(strValue)))
           case _ =>
             throw new ClassCastException(s"Invalid type: ${value.getClass.toString}")

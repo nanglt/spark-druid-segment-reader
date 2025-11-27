@@ -22,15 +22,17 @@ object MixedGranularitySolver {
   def solve[T](values: List[T])(implicit overlapping: Overlapping[T], ordering: Ordering[T]): List[T] = {
     if (values.length < 2) values
     else {
-      val collisions = values.combinations(2).foldLeft(Map.empty[T, Set[T]]) { case (collisions, left :: right :: Nil) =>
-        if (overlapping.overlaps(left, right)) upsertMany(collisions)(
-          left -> Set(left, right),
-          right -> Set(right, left)
-        )(_ ++ _)
-        else upsertMany(collisions)(
-          left -> Set(left),
-          right -> Set(right)
-        )(_ ++ _)
+      val collisions = values.combinations(2).foldLeft(Map.empty[T, Set[T]]) { 
+        case (collisions, left :: right :: Nil) =>
+          if (overlapping.overlaps(left, right)) upsertMany(collisions)(
+            left -> Set(left, right),
+            right -> Set(right, left)
+          )(_ ++ _)
+          else upsertMany(collisions)(
+            left -> Set(left),
+            right -> Set(right)
+          )(_ ++ _)
+        case (collisions, _) => collisions
       }
 
       val results = collisions.foldLeft(Set.empty[T]) { case (solutions, (_, collisions)) => solutions + collisions.max }
