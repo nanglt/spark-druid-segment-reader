@@ -4,9 +4,9 @@
 
 ## Quick summary
 
-__Spark Druid Segment Reader__ is a Spark connector that extends Spark DataFrame reader and supports directly reading
-Druid data from PySpark.
-By using DataSource option you can easily define the input path and date range of reading directories.
+__Spark Druid Segment Reader__ is a high-performance Spark connector that extends Spark DataFrame reader and supports directly reading
+Druid data from PySpark and Scala using the Spark 3.x DataSource V2 API.
+By using DataSource options you can easily define the input path and date range of reading directories.
 
 The connector detects the segments for given intervals based on the directory structure on Deep Storage (without
 accessing the metadata store). For every interval only the latest version is loaded. Data schema of a single segment
@@ -99,7 +99,24 @@ that has a newer version).
 Thus even if multiple versions of the data exist on the storage, only one version (latest) will be loaded (without
 duplicates).
 
+## Version Compatibility
+
+- **Spark 3.5.6** with Scala 2.12.18
+- **Apache Druid 28.0.0**
+- **Hadoop 3.3.6**
+- Java 11 or later required
+
+## What's New in v1.0.0
+
+This major release brings significant improvements and modernization:
+
+- ✅ **Spark 3.5.6 Support** - Fully migrated to Spark 3.x DataSource V2 Connector API
+- ✅ **Performance Improvements** - Optimized partition reader with better memory management
+- ✅ **Modern Dependencies** - Updated to latest stable versions of Druid, Hadoop, and Scala
+- ✅ **Java 11+ Support** - Leverages modern JVM features
+- ✅ **Better Type Safety** - Improved Scala code with stricter compiler options
+- ✅ **Scala 2.12** - Updated from Scala 2.11 for better performance and compatibility
+
 ## Current limitations
 
 - The connector is reading only the dimensions and primitive types of metrics.
-- Apache Spark 3.x is not supported yet (the latest release is compatible with Apache Spark 2.4 only)

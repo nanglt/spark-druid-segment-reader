@@ -1,7 +1,6 @@
 package bi.deep
 
 import org.apache.hadoop.fs.{FileSystem, Path}
-import org.apache.spark.util.SerializableHadoopConfiguration
 
 import java.net.URI
 

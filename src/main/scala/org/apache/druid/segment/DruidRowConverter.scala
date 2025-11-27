@@ -8,7 +8,7 @@ import org.apache.spark.sql.types.{ArrayType, StructField, StructType}
 import org.apache.spark.unsafe.types.UTF8String
 
 import java.util
-import scala.collection.JavaConverters.asScalaBufferConverter
+import scala.jdk.CollectionConverters._
 
 class DruidRowConverter(rowIt: QueryableIndexIndexableAdapter#RowIteratorImpl, fullSchema: StructType,
                         sparkSchema: SparkSchema, selectedDimensions: Array[(StructField, Int)],

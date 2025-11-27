@@ -1,12 +1,12 @@
 import sbt.Keys.excludeDependencies
 
-ThisBuild / version := "0.4.0-SNAPSHOT"
+ThisBuild / version := "1.0.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "2.11.12"
+ThisBuild / scalaVersion := "2.12.18"
 
-val sparkVersion = "2.4.8"
-val hadoopVersion = "2.7.2"
-val druidVersion = "0.22.1"
+val sparkVersion = "3.5.6"
+val hadoopVersion = "3.3.6"
+val druidVersion = "0.20.0"
 
 lazy val root = (project in file("."))
   .settings(
@@ -14,28 +14,29 @@ lazy val root = (project in file("."))
     libraryDependencies ++= Seq(
       "org.apache.spark" %% "spark-core" % sparkVersion % Provided,
       "org.apache.spark" %% "spark-sql" % sparkVersion % Provided,
-      "org.apache.spark" %% "spark-unsafe" % sparkVersion % Provided,
       "org.apache.spark" %% "spark-catalyst" % sparkVersion % Provided,
-      "org.apache.spark" %% "spark-graphx" % sparkVersion % Provided,
       "org.apache.druid" % "druid-server" % druidVersion,
       "org.apache.druid" % "druid-processing" % druidVersion,
       "org.apache.druid" % "druid-core" % druidVersion,
       "org.apache.hadoop" % "hadoop-client" % hadoopVersion % Provided,
       "org.apache.hadoop" % "hadoop-hdfs" % hadoopVersion % Provided,
+      "org.apache.hadoop" % "hadoop-common" % hadoopVersion % Provided,
 
       // tests
-      "org.scalatest" %% "scalatest" % "3.2.13" % Test
+      "org.scalatest" %% "scalatest" % "3.2.18" % Test
     ),
     excludeDependencies ++= Seq(
       "commons-logging" % "commons-logging",
       "log4j" % "log4j",
+      "org.slf4j" % "slf4j-log4j12",
       "multi-bindings" % "multi-bindings",
       "org-hyperic" % "org-hyperic"
     )
   )
 
 assembly / assemblyMergeStrategy := {
-  case PathList("module-info.class") => MergeStrategy.rename
+  case PathList("module-info.class") => MergeStrategy.discard
+  case "module-info.class" => MergeStrategy.discard
   case PathList("javax", xs@_*) => MergeStrategy.first
   case PathList("META-INF", xs@_*) =>
     xs map {
@@ -58,7 +59,17 @@ assembly / assemblyMergeStrategy := {
 
 resolvers += "sigar" at "https://repository.mulesoft.org/nexus/content/repositories/public"
 
-scalacOptions += "-target:jvm-1.8"
+javacOptions ++= Seq("-source", "11", "-target", "11")
+scalacOptions ++= Seq(
+  "-target:11",
+  "-encoding", "UTF-8",
+  "-deprecation",
+  "-feature",
+  "-unchecked",
+  "-language:implicitConversions",
+  "-language:higherKinds",
+  "-Xlint:-unused,_"
+)
 assembly / assemblyShadeRules := Seq(
   ShadeRule.rename("com.google.inject" -> "shaded.com.google.inject").inAll,
   ShadeRule.rename("org.roaringbitmap.**" -> "shaded.org.roaringbitmap.@1").inAll

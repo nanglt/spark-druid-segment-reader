@@ -62,11 +62,17 @@ trait DruidSegmentReader {
 }
 
 object DruidSegmentReader {
-  private val initiated: Boolean = false
+  @volatile private var initiated: Boolean = false
+  private val initLock = new Object()
 
   def init(): Unit = {
     if (!initiated) {
-      NullHandling.initializeForTests()
+      initLock.synchronized {
+        if (!initiated) {
+          NullHandling.initializeForTests()
+          initiated = true
+        }
+      }
     }
   }
 }

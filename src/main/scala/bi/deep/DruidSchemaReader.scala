@@ -6,7 +6,7 @@ import org.apache.druid.segment.{QueryableIndex, QueryableIndexStorageAdapter}
 import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.sql.types.{LongType, StructField, StructType}
 
-import scala.collection.JavaConverters.{asScalaIteratorConverter, collectionAsScalaIterableConverter, iterableAsScalaIterableConverter}
+import scala.jdk.CollectionConverters._
 import scala.collection.immutable
 import scala.collection.immutable.ListMap
 

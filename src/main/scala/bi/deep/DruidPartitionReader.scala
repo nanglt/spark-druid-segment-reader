@@ -3,14 +3,14 @@ package bi.deep
 import org.apache.druid.segment.{DruidRowConverter, QueryableIndexIndexableAdapter, QueryableIndexStorageAdapter}
 import org.apache.hadoop.fs.FileSystem
 import org.apache.spark.sql.catalyst.InternalRow
-import org.apache.spark.sql.sources.v2.reader.InputPartitionReader
+import org.apache.spark.sql.connector.read.PartitionReader
 import org.apache.spark.sql.types.{StructField, StructType}
 
 import java.io.File
 
 
-case class DruidDataReader(filePath: String, schema: StructType, config: Config)
-  extends InputPartitionReader[InternalRow] with DruidSegmentReader {
+case class DruidPartitionReader(filePath: String, schema: StructType, config: Config)
+  extends PartitionReader[InternalRow] with DruidSegmentReader {
 
   @transient
   private implicit val fs: FileSystem = config.factory.fileSystemFor(filePath)
@@ -50,4 +50,4 @@ case class DruidDataReader(filePath: String, schema: StructType, config: Config)
   override def close(): Unit = rowConverter.close()
 }
 
-object DruidDataReader {}
+object DruidPartitionReader {}

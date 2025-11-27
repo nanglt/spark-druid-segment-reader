@@ -4,7 +4,7 @@ import org.apache.commons.io.FileUtils
 
 import java.io.File
 import java.util.zip.ZipFile
-import scala.collection.JavaConverters._
+import scala.jdk.CollectionConverters._
 
 
 object ZipUtils {
